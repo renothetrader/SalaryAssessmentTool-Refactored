@@ -1,90 +1,15 @@
-import React, { useMemo, useState } from 'react';
-import { TrendingUp, MapPin, Briefcase, Award, DollarSign, Search, X, Building2 } from 'lucide-react';
+            </div>
+          )}
 
-// Using the provided salaryData from the existing file
-const salaryData = [
-  // AUDIT
-  { role: 'Partner (5+ years)', location: 'UAE', category: 'Audit', minSalary: 94000, midSalary: 113000, maxSalary: 132000, currency: 'AED' },
-  { role: 'Partner (1-4 years)', location: 'UAE', category: 'Audit', minSalary: 66000, midSalary: 77000, maxSalary: 88000, currency: 'AED' },
-  { role: 'Director', location: 'UAE', category: 'Audit', minSalary: 44000, midSalary: 49500, maxSalary: 55000, currency: 'AED' },
-  { role: 'Senior Manager', location: 'UAE', category: 'Audit', minSalary: 36000, midSalary: 38500, maxSalary: 41000, currency: 'AED' },
-  { role: 'Manager', location: 'UAE', category: 'Audit', minSalary: 24000, midSalary: 28500, maxSalary: 33000, currency: 'AED' },
-  { role: 'Assistant Manager', location: 'UAE', category: 'Audit', minSalary: 20000, midSalary: 22000, maxSalary: 24000, currency: 'AED' },
-  { role: 'Senior Associate', location: 'UAE', category: 'Audit', minSalary: 14000, midSalary: 16500, maxSalary: 19000, currency: 'AED' },
-  { role: 'Associate', location: 'UAE', category: 'Audit', minSalary: 8000, midSalary: 10500, maxSalary: 13000, currency: 'AED' },
-  // RISK CONSULTING
-  { role: 'Partner (5+ years)', location: 'UAE', category: 'Risk Consulting', minSalary: 110000, midSalary: 137500, maxSalary: 165000, currency: 'AED' },
-  { role: 'Partner (1-4 years)', location: 'UAE', category: 'Risk Consulting', minSalary: 82000, midSalary: 96000, maxSalary: 110000, currency: 'AED' },
-  { role: 'Director', location: 'UAE', category: 'Risk Consulting', minSalary: 55000, midSalary: 63000, maxSalary: 71000, currency: 'AED' },
-  { role: 'Senior Manager', location: 'UAE', category: 'Risk Consulting', minSalary: 40000, midSalary: 44500, maxSalary: 49000, currency: 'AED' },
-  { role: 'Manager', location: 'UAE', category: 'Risk Consulting', minSalary: 31000, midSalary: 35000, maxSalary: 39000, currency: 'AED' },
-  { role: 'Assistant Manager', location: 'UAE', category: 'Risk Consulting', minSalary: 25000, midSalary: 27500, maxSalary: 30000, currency: 'AED' },
-  { role: 'Senior Associate', location: 'UAE', category: 'Risk Consulting', minSalary: 17000, midSalary: 20500, maxSalary: 24000, currency: 'AED' },
-  { role: 'Associate', location: 'UAE', category: 'Risk Consulting', minSalary: 13000, midSalary: 14500, maxSalary: 16000, currency: 'AED' },
-  // DEAL ADVISORY
-  { role: 'Partner (5+ years)', location: 'UAE', category: 'Deal Advisory', minSalary: 120000, midSalary: 150500, maxSalary: 181000, currency: 'AED' },
-  { role: 'Partner (1-4 years)', location: 'UAE', category: 'Deal Advisory', minSalary: 88000, midSalary: 99000, maxSalary: 110000, currency: 'AED' },
-  { role: 'Director', location: 'UAE', category: 'Deal Advisory', minSalary: 57000, midSalary: 66500, maxSalary: 76000, currency: 'AED' },
-  { role: 'Senior Manager', location: 'UAE', category: 'Deal Advisory', minSalary: 40000, midSalary: 47500, maxSalary: 55000, currency: 'AED' },
-  { role: 'Manager', location: 'UAE', category: 'Deal Advisory', minSalary: 31000, midSalary: 35000, maxSalary: 39000, currency: 'AED' },
-  { role: 'Assistant Manager', location: 'UAE', category: 'Deal Advisory', minSalary: 26000, midSalary: 28500, maxSalary: 31000, currency: 'AED' },
-  { role: 'Senior Associate', location: 'UAE', category: 'Deal Advisory', minSalary: 18000, midSalary: 21000, maxSalary: 24000, currency: 'AED' },
-  { role: 'Associate', location: 'UAE', category: 'Deal Advisory', minSalary: 14000, midSalary: 15500, maxSalary: 17000, currency: 'AED' },
-  // PRIVATE BANKING & WEALTH MANAGEMENT
-  { role: 'Head of Private Banking / Wealth Management', location: 'UAE', category: 'Banking', minSalary: 149000, midSalary: 167500, maxSalary: 186000, currency: 'AED' },
-  { role: 'Market Head / Managing Director', location: 'UAE', category: 'Banking', minSalary: 132000, midSalary: 143000, maxSalary: 154000, currency: 'AED' },
-  { role: 'Executive Director / Unit Head', location: 'UAE', category: 'Banking', minSalary: 85000, midSalary: 97500, maxSalary: 110000, currency: 'AED' },
-  { role: 'Associate Director', location: 'UAE', category: 'Banking', minSalary: 71000, midSalary: 79500, maxSalary: 88000, currency: 'AED' },
-  { role: 'Senior Wealth Manager', location: 'UAE', category: 'Banking', minSalary: 71000, midSalary: 79500, maxSalary: 88000, currency: 'AED' },
-  { role: 'Wealth Manager', location: 'UAE', category: 'Banking', minSalary: 51000, midSalary: 60000, maxSalary: 69000, currency: 'AED' },
-  { role: 'Relationship Manager - Key Clients', location: 'UAE', category: 'Banking', minSalary: 49000, midSalary: 57500, maxSalary: 66000, currency: 'AED' },
-  { role: 'Wealth Management Specialist', location: 'UAE', category: 'Banking', minSalary: 38000, midSalary: 44000, maxSalary: 50000, currency: 'AED' },
-  { role: 'Assistant Relationship Manager', location: 'UAE', category: 'Banking', minSalary: 27000, midSalary: 35500, maxSalary: 44000, currency: 'AED' },
-  // CORPORATE BANKING
-  { role: 'Head of Corporate Banking', location: 'UAE', category: 'Banking', minSalary: 96000, midSalary: 121000, maxSalary: 146000, currency: 'AED' },
-  { role: 'Head of SME Banking', location: 'UAE', category: 'Banking', minSalary: 74000, midSalary: 93000, maxSalary: 112000, currency: 'AED' },
-  { role: 'Team Leader - Corporate Banking', location: 'UAE', category: 'Banking', minSalary: 88000, midSalary: 93500, maxSalary: 99000, currency: 'AED' },
-  { role: 'Senior Director - Relationship Management', location: 'UAE', category: 'Banking', minSalary: 71000, midSalary: 76500, maxSalary: 82000, currency: 'AED' },
-  { role: 'Director - Relationship Management', location: 'UAE', category: 'Banking', minSalary: 53000, midSalary: 61000, maxSalary: 69000, currency: 'AED' },
-  { role: 'Relationship Manager', location: 'UAE', category: 'Banking', minSalary: 38000, midSalary: 43500, maxSalary: 49000, currency: 'AED' },
-  // COMPLIANCE & REGULATION
-  { role: 'Chief Compliance Officer (CCO)', location: 'UAE', category: 'Compliance', minSalary: 102000, midSalary: 113500, maxSalary: 125000, currency: 'AED' },
-  { role: 'Head of Enforcement', location: 'UAE', category: 'Compliance', minSalary: 78000, midSalary: 87500, maxSalary: 97000, currency: 'AED' },
-  { role: 'Head of Compliance', location: 'UAE', category: 'Compliance', minSalary: 70000, midSalary: 79000, maxSalary: 88000, currency: 'AED' },
-  { role: 'Head of Financial Crime', location: 'UAE', category: 'Compliance', minSalary: 61000, midSalary: 67000, maxSalary: 73000, currency: 'AED' },
-  { role: 'Head of Fraud', location: 'UAE', category: 'Compliance', minSalary: 56000, midSalary: 62500, maxSalary: 69000, currency: 'AED' },
-  { role: 'Compliance Licensed MLRO (DIFC)', location: 'UAE', category: 'Compliance', minSalary: 45000, midSalary: 52000, maxSalary: 59000, currency: 'AED' },
-  { role: 'Senior Manager, Banking Supervisor', location: 'UAE', category: 'Compliance', minSalary: 50000, midSalary: 53500, maxSalary: 57000, currency: 'AED' },
-  { role: 'Manager, Banking Supervision', location: 'UAE', category: 'Compliance', minSalary: 45000, midSalary: 47000, maxSalary: 49000, currency: 'AED' },
-  { role: 'Financial Crime Manager', location: 'UAE', category: 'Compliance', minSalary: 42000, midSalary: 45000, maxSalary: 48000, currency: 'AED' },
-  { role: 'Fraud Manager', location: 'UAE', category: 'Compliance', minSalary: 39000, midSalary: 42000, maxSalary: 45000, currency: 'AED' },
-  { role: 'Compliance Manager', location: 'UAE', category: 'Compliance', minSalary: 33000, midSalary: 36500, maxSalary: 40000, currency: 'AED' },
-  { role: 'Sanctions and AML Manager', location: 'UAE', category: 'Compliance', minSalary: 33000, midSalary: 36000, maxSalary: 39000, currency: 'AED' },
-  { role: 'Compliance Consultant', location: 'UAE', category: 'Compliance', minSalary: 28000, midSalary: 33500, maxSalary: 39000, currency: 'AED' },
-  { role: 'Compliance Officer - Private Banking', location: 'UAE', category: 'Compliance', minSalary: 23000, midSalary: 26000, maxSalary: 29000, currency: 'AED' },
-  { role: 'Compliance Officer (KYC)', location: 'UAE', category: 'Compliance', minSalary: 16000, midSalary: 19500, maxSalary: 23000, currency: 'AED' },
-  // RISK
-  { role: 'Chief Risk Officer', location: 'UAE', category: 'Risk', minSalary: 82000, midSalary: 106500, maxSalary: 131000, currency: 'AED' },
-  { role: 'Head of Credit Risk', location: 'UAE', category: 'Risk', minSalary: 60000, midSalary: 69000, maxSalary: 78000, currency: 'AED' },
-  { role: 'Head of Collections and Recovery', location: 'UAE', category: 'Risk', minSalary: 60000, midSalary: 66500, maxSalary: 73000, currency: 'AED' },
-  { role: 'Market Risk Head', location: 'UAE', category: 'Risk', minSalary: 59000, midSalary: 63500, maxSalary: 68000, currency: 'AED' },
-  { role: 'Head of Risk Analytics', location: 'UAE', category: 'Risk', minSalary: 56000, midSalary: 62000, maxSalary: 68000, currency: 'AED' },
-  { role: 'Credit Risk Manager', location: 'UAE', category: 'Risk', minSalary: 34000, midSalary: 43500, maxSalary: 53000, currency: 'AED' },
-  { role: 'Operational Risk Manager', location: 'UAE', category: 'Risk', minSalary: 38000, midSalary: 42000, maxSalary: 46000, currency: 'AED' },
-  { role: 'Market Risk Manager', location: 'UAE', category: 'Risk', minSalary: 34000, midSalary: 39500, maxSalary: 45000, currency: 'AED' },
-  { role: 'Risk Analytics Manager', location: 'UAE', category: 'Risk', minSalary: 28000, midSalary: 34500, maxSalary: 41000, currency: 'AED' },
-  { role: 'Enterprise Risk Manager', location: 'UAE', category: 'Risk', minSalary: 30000, midSalary: 34000, maxSalary: 38000, currency: 'AED' },
-  { role: 'Credit Risk Analyst', location: 'UAE', category: 'Risk', minSalary: 19000, midSalary: 22000, maxSalary: 25000, currency: 'AED' },
-  { role: 'Risk Analytics Officer', location: 'UAE', category: 'Risk', minSalary: 17000, midSalary: 21000, maxSalary: 25000, currency: 'AED' },
-  { role: 'Market Risk Analyst', location: 'UAE', category: 'Risk', minSalary: 20000, midSalary: 22000, maxSalary: 24000, currency: 'AED' },
-  // FINANCE
-  { role: 'Group Chief Financial Officer', location: 'UAE', category: 'Finance', minSalary: 102000, midSalary: 127500, maxSalary: 153000, currency: 'AED' },
-  { role: 'Chief Internal Auditor', location: 'UAE', category: 'Finance', minSalary: 87000, midSalary: 109500, maxSalary: 132000, currency: 'AED' },
-  { role: 'Chief Financial Officer', location: 'UAE', category: 'Finance', minSalary: 61000, midSalary: 91500, maxSalary: 122000, currency: 'AED' },
-  { role: 'Internal Audit Director', location: 'UAE', category: 'Finance', minSalary: 61000, midSalary: 71000, maxSalary: 81000, currency: 'AED' },
-  { role: 'Financial Director', location: 'UAE', category: 'Finance', minSalary: 56000, midSalary: 68500, maxSalary: 81000, currency: 'AED' },
-  { role: 'Treasury Director', location: 'UAE', category: 'Finance', minSalary: 53000, midSalary: 62000, maxSalary: 71000, currency: 'AED' },
-  { role: 'Financial Controller', location: 'UAE', category: 'Finance', minSalary: 46000, midSalary: 56500, maxSalary: 66000, currency: 'AED' },
-  { role: 'Financial Planning Analysis Director', location: 'UAE', category: 'Finance', minSalary: 36000, midSalary: 46500, maxSalary: 56000, currency: 'AED' },
-  { role: 'Financial Planning Analysis Manager', location: 'UAE', category: 'Finance', minSalary: 32000, midSalary: 39000, maxSalary: 46000, currency: 'AED' },
-  { role: 'Treasury Manager', location: 'UAE', category: 'Finance', minSalary: 31000, midSalary: 38500, maxSalary: 46000, currency: 'AED
+          {/* No results */}
+          {showResults && results.length === 0 && (
+            <div className="text-center py-12 text-white">
+              <p className="text-2xl font-semibold mb-4">No matching salary data found</p>
+              <p className="text-slate-300">Try adjusting your job title or industry selection.</p>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
