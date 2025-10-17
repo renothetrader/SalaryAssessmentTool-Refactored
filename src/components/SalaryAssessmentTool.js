@@ -1,206 +1,206 @@
-import React, { useState } from 'react';
-import './SalaryAssessmentTool.css';
+import React, { useState, useEffect } from 'react';
+import { TrendingUp, MapPin, Briefcase, Award, DollarSign, Search, X, Building2 } from 'lucide-react';
 
-// Updated salary data with Min-Mid-Max format (UAE standard)
 const salaryData = [
-  // Software Engineer - San Francisco
-  { role: 'Software Engineer', location: 'San Francisco', experienceLevel: 'Entry', minSalary: 110000, midSalary: 120000, maxSalary: 135000, currency: 'USD' },
-  { role: 'Software Engineer', location: 'San Francisco', experienceLevel: 'Mid', minSalary: 135000, midSalary: 145000, maxSalary: 165000, currency: 'USD' },
-  { role: 'Software Engineer', location: 'San Francisco', experienceLevel: 'Senior', minSalary: 170000, midSalary: 180000, maxSalary: 200000, currency: 'USD' },
-  { role: 'Software Engineer', location: 'San Francisco', experienceLevel: 'Lead', minSalary: 200000, midSalary: 220000, maxSalary: 250000, currency: 'USD' },
+  // AUDIT
+  { role: 'Partner (5+ years)', location: 'UAE', category: 'Audit', minSalary: 94000, midSalary: 113000, maxSalary: 132000, currency: 'AED' },
+  { role: 'Partner (1-4 years)', location: 'UAE', category: 'Audit', minSalary: 66000, midSalary: 77000, maxSalary: 88000, currency: 'AED' },
+  { role: 'Director', location: 'UAE', category: 'Audit', minSalary: 44000, midSalary: 49500, maxSalary: 55000, currency: 'AED' },
+  { role: 'Senior Manager', location: 'UAE', category: 'Audit', minSalary: 36000, midSalary: 38500, maxSalary: 41000, currency: 'AED' },
+  { role: 'Manager', location: 'UAE', category: 'Audit', minSalary: 24000, midSalary: 28500, maxSalary: 33000, currency: 'AED' },
+  { role: 'Assistant Manager', location: 'UAE', category: 'Audit', minSalary: 20000, midSalary: 22000, maxSalary: 24000, currency: 'AED' },
+  { role: 'Senior Associate', location: 'UAE', category: 'Audit', minSalary: 14000, midSalary: 16500, maxSalary: 19000, currency: 'AED' },
+  { role: 'Associate', location: 'UAE', category: 'Audit', minSalary: 8000, midSalary: 10500, maxSalary: 13000, currency: 'AED' },
 
-  // Software Engineer - New York
-  { role: 'Software Engineer', location: 'New York', experienceLevel: 'Entry', minSalary: 105000, midSalary: 115000, maxSalary: 130000, currency: 'USD' },
-  { role: 'Software Engineer', location: 'New York', experienceLevel: 'Mid', minSalary: 130000, midSalary: 140000, maxSalary: 155000, currency: 'USD' },
-  { role: 'Software Engineer', location: 'New York', experienceLevel: 'Senior', minSalary: 160000, midSalary: 170000, maxSalary: 190000, currency: 'USD' },
-  { role: 'Software Engineer', location: 'New York', experienceLevel: 'Lead', minSalary: 190000, midSalary: 210000, maxSalary: 240000, currency: 'USD' },
+  // RISK CONSULTING
+  { role: 'Partner (5+ years)', location: 'UAE', category: 'Risk Consulting', minSalary: 110000, midSalary: 137500, maxSalary: 165000, currency: 'AED' },
+  { role: 'Partner (1-4 years)', location: 'UAE', category: 'Risk Consulting', minSalary: 82000, midSalary: 96000, maxSalary: 110000, currency: 'AED' },
+  { role: 'Director', location: 'UAE', category: 'Risk Consulting', minSalary: 55000, midSalary: 63000, maxSalary: 71000, currency: 'AED' },
+  { role: 'Senior Manager', location: 'UAE', category: 'Risk Consulting', minSalary: 40000, midSalary: 44500, maxSalary: 49000, currency: 'AED' },
+  { role: 'Manager', location: 'UAE', category: 'Risk Consulting', minSalary: 31000, midSalary: 35000, maxSalary: 39000, currency: 'AED' },
+  { role: 'Assistant Manager', location: 'UAE', category: 'Risk Consulting', minSalary: 25000, midSalary: 27500, maxSalary: 30000, currency: 'AED' },
+  { role: 'Senior Associate', location: 'UAE', category: 'Risk Consulting', minSalary: 17000, midSalary: 20500, maxSalary: 24000, currency: 'AED' },
+  { role: 'Associate', location: 'UAE', category: 'Risk Consulting', minSalary: 13000, midSalary: 14500, maxSalary: 16000, currency: 'AED' },
 
-  // Software Engineer - Seattle
-  { role: 'Software Engineer', location: 'Seattle', experienceLevel: 'Entry', minSalary: 100000, midSalary: 110000, maxSalary: 125000, currency: 'USD' },
-  { role: 'Software Engineer', location: 'Seattle', experienceLevel: 'Mid', minSalary: 125000, midSalary: 135000, maxSalary: 150000, currency: 'USD' },
-  { role: 'Software Engineer', location: 'Seattle', experienceLevel: 'Senior', minSalary: 155000, midSalary: 165000, maxSalary: 185000, currency: 'USD' },
-  { role: 'Software Engineer', location: 'Seattle', experienceLevel: 'Lead', minSalary: 185000, midSalary: 200000, maxSalary: 230000, currency: 'USD' },
+  // DEAL ADVISORY
+  { role: 'Partner (5+ years)', location: 'UAE', category: 'Deal Advisory', minSalary: 120000, midSalary: 150500, maxSalary: 181000, currency: 'AED' },
+  { role: 'Partner (1-4 years)', location: 'UAE', category: 'Deal Advisory', minSalary: 88000, midSalary: 99000, maxSalary: 110000, currency: 'AED' },
+  { role: 'Director', location: 'UAE', category: 'Deal Advisory', minSalary: 57000, midSalary: 66500, maxSalary: 76000, currency: 'AED' },
+  { role: 'Senior Manager', location: 'UAE', category: 'Deal Advisory', minSalary: 40000, midSalary: 47500, maxSalary: 55000, currency: 'AED' },
+  { role: 'Manager', location: 'UAE', category: 'Deal Advisory', minSalary: 31000, midSalary: 35000, maxSalary: 39000, currency: 'AED' },
+  { role: 'Assistant Manager', location: 'UAE', category: 'Deal Advisory', minSalary: 26000, midSalary: 28500, maxSalary: 31000, currency: 'AED' },
+  { role: 'Senior Associate', location: 'UAE', category: 'Deal Advisory', minSalary: 18000, midSalary: 21000, maxSalary: 24000, currency: 'AED' },
+  { role: 'Associate', location: 'UAE', category: 'Deal Advisory', minSalary: 14000, midSalary: 15500, maxSalary: 17000, currency: 'AED' },
 
-  // Data Scientist - San Francisco
-  { role: 'Data Scientist', location: 'San Francisco', experienceLevel: 'Entry', minSalary: 105000, midSalary: 115000, maxSalary: 130000, currency: 'USD' },
-  { role: 'Data Scientist', location: 'San Francisco', experienceLevel: 'Mid', minSalary: 130000, midSalary: 140000, maxSalary: 155000, currency: 'USD' },
-  { role: 'Data Scientist', location: 'San Francisco', experienceLevel: 'Senior', minSalary: 165000, midSalary: 175000, maxSalary: 195000, currency: 'USD' },
-  { role: 'Data Scientist', location: 'San Francisco', experienceLevel: 'Lead', minSalary: 195000, midSalary: 215000, maxSalary: 245000, currency: 'USD' },
+  // PRIVATE BANKING & WEALTH MANAGEMENT
+  { role: 'Head of Private Banking / Wealth Management', location: 'UAE', category: 'Banking', minSalary: 149000, midSalary: 167500, maxSalary: 186000, currency: 'AED' },
+  { role: 'Market Head / Managing Director', location: 'UAE', category: 'Banking', minSalary: 132000, midSalary: 143000, maxSalary: 154000, currency: 'AED' },
+  { role: 'Executive Director / Unit Head', location: 'UAE', category: 'Banking', minSalary: 85000, midSalary: 97500, maxSalary: 110000, currency: 'AED' },
+  { role: 'Associate Director', location: 'UAE', category: 'Banking', minSalary: 71000, midSalary: 79500, maxSalary: 88000, currency: 'AED' },
+  { role: 'Senior Wealth Manager', location: 'UAE', category: 'Banking', minSalary: 71000, midSalary: 79500, maxSalary: 88000, currency: 'AED' },
+  { role: 'Wealth Manager', location: 'UAE', category: 'Banking', minSalary: 51000, midSalary: 60000, maxSalary: 69000, currency: 'AED' },
+  { role: 'Relationship Manager - Key Clients', location: 'UAE', category: 'Banking', minSalary: 49000, midSalary: 57500, maxSalary: 66000, currency: 'AED' },
+  { role: 'Wealth Management Specialist', location: 'UAE', category: 'Banking', minSalary: 38000, midSalary: 44000, maxSalary: 50000, currency: 'AED' },
+  { role: 'Assistant Relationship Manager', location: 'UAE', category: 'Banking', minSalary: 27000, midSalary: 35500, maxSalary: 44000, currency: 'AED' },
 
-  // Data Scientist - New York
-  { role: 'Data Scientist', location: 'New York', experienceLevel: 'Entry', minSalary: 100000, midSalary: 110000, maxSalary: 125000, currency: 'USD' },
-  { role: 'Data Scientist', location: 'New York', experienceLevel: 'Mid', minSalary: 125000, midSalary: 135000, maxSalary: 150000, currency: 'USD' },
-  { role: 'Data Scientist', location: 'New York', experienceLevel: 'Senior', minSalary: 160000, midSalary: 170000, maxSalary: 190000, currency: 'USD' },
-  { role: 'Data Scientist', location: 'New York', experienceLevel: 'Lead', minSalary: 190000, midSalary: 210000, maxSalary: 240000, currency: 'USD' },
+  // CORPORATE BANKING
+  { role: 'Head of Corporate Banking', location: 'UAE', category: 'Banking', minSalary: 96000, midSalary: 121000, maxSalary: 146000, currency: 'AED' },
+  { role: 'Head of SME Banking', location: 'UAE', category: 'Banking', minSalary: 74000, midSalary: 93000, maxSalary: 112000, currency: 'AED' },
+  { role: 'Team Leader - Corporate Banking', location: 'UAE', category: 'Banking', minSalary: 88000, midSalary: 93500, maxSalary: 99000, currency: 'AED' },
+  { role: 'Senior Director - Relationship Management', location: 'UAE', category: 'Banking', minSalary: 71000, midSalary: 76500, maxSalary: 82000, currency: 'AED' },
+  { role: 'Director - Relationship Management', location: 'UAE', category: 'Banking', minSalary: 53000, midSalary: 61000, maxSalary: 69000, currency: 'AED' },
+  { role: 'Relationship Manager', location: 'UAE', category: 'Banking', minSalary: 38000, midSalary: 43500, maxSalary: 49000, currency: 'AED' },
 
-  // Product Manager - San Francisco
-  { role: 'Product Manager', location: 'San Francisco', experienceLevel: 'Entry', minSalary: 110000, midSalary: 120000, maxSalary: 135000, currency: 'USD' },
-  { role: 'Product Manager', location: 'San Francisco', experienceLevel: 'Mid', minSalary: 140000, midSalary: 150000, maxSalary: 170000, currency: 'USD' },
-  { role: 'Product Manager', location: 'San Francisco', experienceLevel: 'Senior', minSalary: 175000, midSalary: 185000, maxSalary: 210000, currency: 'USD' },
-  { role: 'Product Manager', location: 'San Francisco', experienceLevel: 'Lead', minSalary: 205000, midSalary: 225000, maxSalary: 255000, currency: 'USD' },
+  // COMPLIANCE & REGULATION
+  { role: 'Chief Compliance Officer (CCO)', location: 'UAE', category: 'Compliance', minSalary: 102000, midSalary: 113500, maxSalary: 125000, currency: 'AED' },
+  { role: 'Head of Enforcement', location: 'UAE', category: 'Compliance', minSalary: 78000, midSalary: 87500, maxSalary: 97000, currency: 'AED' },
+  { role: 'Head of Compliance', location: 'UAE', category: 'Compliance', minSalary: 70000, midSalary: 79000, maxSalary: 88000, currency: 'AED' },
+  { role: 'Head of Financial Crime', location: 'UAE', category: 'Compliance', minSalary: 61000, midSalary: 67000, maxSalary: 73000, currency: 'AED' },
+  { role: 'Head of Fraud', location: 'UAE', category: 'Compliance', minSalary: 56000, midSalary: 62500, maxSalary: 69000, currency: 'AED' },
+  { role: 'Compliance Licensed MLRO (DIFC)', location: 'UAE', category: 'Compliance', minSalary: 45000, midSalary: 52000, maxSalary: 59000, currency: 'AED' },
+  { role: 'Senior Manager, Banking Supervisor', location: 'UAE', category: 'Compliance', minSalary: 50000, midSalary: 53500, maxSalary: 57000, currency: 'AED' },
+  { role: 'Manager, Banking Supervision', location: 'UAE', category: 'Compliance', minSalary: 45000, midSalary: 47000, maxSalary: 49000, currency: 'AED' },
+  { role: 'Financial Crime Manager', location: 'UAE', category: 'Compliance', minSalary: 42000, midSalary: 45000, maxSalary: 48000, currency: 'AED' },
+  { role: 'Fraud Manager', location: 'UAE', category: 'Compliance', minSalary: 39000, midSalary: 42000, maxSalary: 45000, currency: 'AED' },
+  { role: 'Compliance Manager', location: 'UAE', category: 'Compliance', minSalary: 33000, midSalary: 36500, maxSalary: 40000, currency: 'AED' },
+  { role: 'Sanctions and AML Manager', location: 'UAE', category: 'Compliance', minSalary: 33000, midSalary: 36000, maxSalary: 39000, currency: 'AED' },
+  { role: 'Compliance Consultant', location: 'UAE', category: 'Compliance', minSalary: 28000, midSalary: 33500, maxSalary: 39000, currency: 'AED' },
+  { role: 'Compliance Officer - Private Banking', location: 'UAE', category: 'Compliance', minSalary: 23000, midSalary: 26000, maxSalary: 29000, currency: 'AED' },
+  { role: 'Compliance Officer (KYC)', location: 'UAE', category: 'Compliance', minSalary: 16000, midSalary: 19500, maxSalary: 23000, currency: 'AED' },
 
-  // DevOps Engineer - San Francisco
-  { role: 'DevOps Engineer', location: 'San Francisco', experienceLevel: 'Entry', minSalary: 105000, midSalary: 115000, maxSalary: 130000, currency: 'USD' },
-  { role: 'DevOps Engineer', location: 'San Francisco', experienceLevel: 'Mid', minSalary: 130000, midSalary: 140000, maxSalary: 155000, currency: 'USD' },
-  { role: 'DevOps Engineer', location: 'San Francisco', experienceLevel: 'Senior', minSalary: 165000, midSalary: 175000, maxSalary: 195000, currency: 'USD' },
-  { role: 'DevOps Engineer', location: 'San Francisco', experienceLevel: 'Lead', minSalary: 195000, midSalary: 215000, maxSalary: 245000, currency: 'USD' },
+  // RISK
+  { role: 'Chief Risk Officer', location: 'UAE', category: 'Risk', minSalary: 82000, midSalary: 106500, maxSalary: 131000, currency: 'AED' },
+  { role: 'Head of Credit Risk', location: 'UAE', category: 'Risk', minSalary: 60000, midSalary: 69000, maxSalary: 78000, currency: 'AED' },
+  { role: 'Head of Collections and Recovery', location: 'UAE', category: 'Risk', minSalary: 60000, midSalary: 66500, maxSalary: 73000, currency: 'AED' },
+  { role: 'Market Risk Head', location: 'UAE', category: 'Risk', minSalary: 59000, midSalary: 63500, maxSalary: 68000, currency: 'AED' },
+  { role: 'Head of Risk Analytics', location: 'UAE', category: 'Risk', minSalary: 56000, midSalary: 62000, maxSalary: 68000, currency: 'AED' },
+  { role: 'Credit Risk Manager', location: 'UAE', category: 'Risk', minSalary: 34000, midSalary: 43500, maxSalary: 53000, currency: 'AED' },
+  { role: 'Operational Risk Manager', location: 'UAE', category: 'Risk', minSalary: 38000, midSalary: 42000, maxSalary: 46000, currency: 'AED' },
+  { role: 'Market Risk Manager', location: 'UAE', category: 'Risk', minSalary: 34000, midSalary: 39500, maxSalary: 45000, currency: 'AED' },
+  { role: 'Risk Analytics Manager', location: 'UAE', category: 'Risk', minSalary: 28000, midSalary: 34500, maxSalary: 41000, currency: 'AED' },
+  { role: 'Enterprise Risk Manager', location: 'UAE', category: 'Risk', minSalary: 30000, midSalary: 34000, maxSalary: 38000, currency: 'AED' },
+  { role: 'Credit Risk Analyst', location: 'UAE', category: 'Risk', minSalary: 19000, midSalary: 22000, maxSalary: 25000, currency: 'AED' },
+  { role: 'Risk Analytics Officer', location: 'UAE', category: 'Risk', minSalary: 17000, midSalary: 21000, maxSalary: 25000, currency: 'AED' },
+  { role: 'Market Risk Analyst', location: 'UAE', category: 'Risk', minSalary: 20000, midSalary: 22000, maxSalary: 24000, currency: 'AED' },
 
-  // UAE - Software Engineer (AED)
-  { role: 'Software Engineer', location: 'UAE', experienceLevel: 'Entry', minSalary: 60000, midSalary: 65000, maxSalary: 70000, currency: 'AED' },
-  { role: 'Software Engineer', location: 'UAE', experienceLevel: 'Mid', minSalary: 90000, midSalary: 100000, maxSalary: 110000, currency: 'AED' },
-  { role: 'Software Engineer', location: 'UAE', experienceLevel: 'Senior', minSalary: 130000, midSalary: 145000, maxSalary: 160000, currency: 'AED' },
-  { role: 'Software Engineer', location: 'UAE', experienceLevel: 'Lead', minSalary: 150000, midSalary: 165000, maxSalary: 180000, currency: 'AED' },
+  // FINANCE
+  { role: 'Group Chief Financial Officer', location: 'UAE', category: 'Finance', minSalary: 102000, midSalary: 127500, maxSalary: 153000, currency: 'AED' },
+  { role: 'Chief Internal Auditor', location: 'UAE', category: 'Finance', minSalary: 87000, midSalary: 109500, maxSalary: 132000, currency: 'AED' },
+  { role: 'Chief Financial Officer', location: 'UAE', category: 'Finance', minSalary: 61000, midSalary: 91500, maxSalary: 122000, currency: 'AED' },
+  { role: 'Internal Audit Director', location: 'UAE', category: 'Finance', minSalary: 61000, midSalary: 71000, maxSalary: 81000, currency: 'AED' },
+  { role: 'Financial Director', location: 'UAE', category: 'Finance', minSalary: 56000, midSalary: 68500, maxSalary: 81000, currency: 'AED' },
+  { role: 'Treasury Director', location: 'UAE', category: 'Finance', minSalary: 53000, midSalary: 62000, maxSalary: 71000, currency: 'AED' },
+  { role: 'Financial Controller', location: 'UAE', category: 'Finance', minSalary: 46000, midSalary: 56500, maxSalary: 66000, currency: 'AED' },
+  { role: 'Financial Planning Analysis Director', location: 'UAE', category: 'Finance', minSalary: 36000, midSalary: 46500, maxSalary: 56000, currency: 'AED' },
+  { role: 'Financial Planning Analysis Manager', location: 'UAE', category: 'Finance', minSalary: 32000, midSalary: 39000, maxSalary: 46000, currency: 'AED' },
+  { role: 'Treasury Manager', location: 'UAE', category: 'Finance', minSalary: 31000, midSalary: 38500, maxSalary: 46000, currency: 'AED' },
+  { role: 'Internal Audit Manager', location: 'UAE', category: 'Finance', minSalary: 25000, midSalary: 33000, maxSalary: 41000, currency: 'AED' },
+  { role: 'Finance Manager', location: 'UAE', category: 'Finance', minSalary: 25000, midSalary: 31000, maxSalary: 37000, currency: 'AED' },
+  { role: 'Reporting Manager', location: 'UAE', category: 'Finance', minSalary: 24000, midSalary: 30000, maxSalary: 36000, currency: 'AED' },
+  { role: 'Budgeting Manager', location: 'UAE', category: 'Finance', minSalary: 18000, midSalary: 24500, maxSalary: 31000, currency: 'AED' },
+  { role: 'Chief Accountant', location: 'UAE', category: 'Finance', minSalary: 15000, midSalary: 19000, maxSalary: 23000, currency: 'AED' },
+  { role: 'Finance / Business Analyst', location: 'UAE', category: 'Finance', minSalary: 10000, midSalary: 14000, maxSalary: 18000, currency: 'AED' },
+  { role: 'Credit Manager', location: 'UAE', category: 'Finance', minSalary: 10000, midSalary: 14000, maxSalary: 18000, currency: 'AED' },
+  { role: 'Internal Auditor', location: 'UAE', category: 'Finance', minSalary: 11000, midSalary: 13500, maxSalary: 16000, currency: 'AED' },
+  { role: 'Management Accountant', location: 'UAE', category: 'Finance', minSalary: 8000, midSalary: 11500, maxSalary: 15000, currency: 'AED' },
+  { role: 'Financial Accountant', location: 'UAE', category: 'Finance', minSalary: 6000, midSalary: 9500, maxSalary: 13000, currency: 'AED' },
 
-  { role: 'Software Engineer', location: 'Abu Dhabi', experienceLevel: 'Entry', minSalary: 60000, midSalary: 68000, maxSalary: 70000, currency: 'AED' },
-  { role: 'Software Engineer', location: 'Abu Dhabi', experienceLevel: 'Mid', minSalary: 90000, midSalary: 105000, maxSalary: 110000, currency: 'AED' },
-  { role: 'Software Engineer', location: 'Abu Dhabi', experienceLevel: 'Senior', minSalary: 130000, midSalary: 150000, maxSalary: 160000, currency: 'AED' },
-  { role: 'Software Engineer', location: 'Abu Dhabi', experienceLevel: 'Lead', minSalary: 150000, midSalary: 170000, maxSalary: 180000, currency: 'AED' },
+  // HR
+  { role: 'Chief Shared Services Officer (CSSO)', location: 'UAE', category: 'HR', minSalary: 109600, midSalary: 143300, maxSalary: 177000, currency: 'AED' },
+  { role: 'Chief Human Resources Officer (CHRO)', location: 'UAE', category: 'HR', minSalary: 109600, midSalary: 137300, maxSalary: 165000, currency: 'AED' },
+  { role: 'Vice President Human Resources', location: 'UAE', category: 'HR', minSalary: 87300, midSalary: 113150, maxSalary: 139000, currency: 'AED' },
+  { role: 'Executive Director Support Services', location: 'UAE', category: 'HR', minSalary: 81900, midSalary: 103450, maxSalary: 125000, currency: 'AED' },
+  { role: 'Executive Director Human Resources', location: 'UAE', category: 'HR', minSalary: 78400, midSalary: 95700, maxSalary: 113000, currency: 'AED' },
+  { role: 'Director Support Services', location: 'UAE', category: 'HR', minSalary: 65900, midSalary: 79950, maxSalary: 94000, currency: 'AED' },
+  { role: 'HR Director', location: 'UAE', category: 'HR', minSalary: 58000, midSalary: 75000, maxSalary: 92000, currency: 'AED' },
+  { role: 'Culture and Change Director', location: 'UAE', category: 'HR', minSalary: 45000, midSalary: 61500, maxSalary: 78000, currency: 'AED' },
+  { role: 'Director / Head of Organisational Development', location: 'UAE', category: 'HR', minSalary: 43700, midSalary: 59850, maxSalary: 76000, currency: 'AED' },
+  { role: 'Director / Head of Talent Acquisition', location: 'UAE', category: 'HR', minSalary: 43700, midSalary: 59350, maxSalary: 75000, currency: 'AED' },
+  { role: 'Director / Head of Talent Mgt', location: 'UAE', category: 'HR', minSalary: 43700, midSalary: 58350, maxSalary: 73000, currency: 'AED' },
+  { role: 'Director / Head of Learning & Development', location: 'UAE', category: 'HR', minSalary: 43700, midSalary: 56350, maxSalary: 69000, currency: 'AED' },
+  { role: 'Human Resources Business Partner', location: 'UAE', category: 'HR', minSalary: 33000, midSalary: 46000, maxSalary: 59000, currency: 'AED' },
+  { role: 'Organisational Development Manager', location: 'UAE', category: 'HR', minSalary: 32000, midSalary: 40000, maxSalary: 48000, currency: 'AED' },
+  { role: 'HR Manager', location: 'UAE', category: 'HR', minSalary: 33000, midSalary: 39000, maxSalary: 45000, currency: 'AED' },
+  { role: 'Compensation and Benefits Manager', location: 'UAE', category: 'HR', minSalary: 27700, midSalary: 34850, maxSalary: 42000, currency: 'AED' },
+  { role: 'Learning & Development Manager', location: 'UAE', category: 'HR', minSalary: 27700, midSalary: 33350, maxSalary: 39000, currency: 'AED' },
+  { role: 'Talent Acquisition Manager', location: 'UAE', category: 'HR', minSalary: 22400, midSalary: 30200, maxSalary: 38000, currency: 'AED' },
+  { role: 'Training Manager', location: 'UAE', category: 'HR', minSalary: 22400, midSalary: 29200, maxSalary: 36000, currency: 'AED' },
+  { role: 'Recruitment Manager', location: 'UAE', category: 'HR', minSalary: 20300, midSalary: 25650, maxSalary: 31000, currency: 'AED' },
+  { role: 'Employee Relations Manager', location: 'UAE', category: 'HR', minSalary: 20300, midSalary: 24650, maxSalary: 29000, currency: 'AED' },
+  { role: 'Organisational Development Specialist', location: 'UAE', category: 'HR', minSalary: 19100, midSalary: 22550, maxSalary: 26000, currency: 'AED' },
+  { role: 'Learning & Development Specialist', location: 'UAE', category: 'HR', minSalary: 16000, midSalary: 19500, maxSalary: 23000, currency: 'AED' },
+  { role: 'Talent Acquisition Specialist', location: 'UAE', category: 'HR', minSalary: 16000, midSalary: 18500, maxSalary: 21000, currency: 'AED' },
+  { role: 'HR Generalist', location: 'UAE', category: 'HR', minSalary: 16000, midSalary: 18500, maxSalary: 21000, currency: 'AED' },
 
-  { role: 'Software Engineer', location: 'Dubai', experienceLevel: 'Entry', minSalary: 60000, midSalary: 65000, maxSalary: 70000, currency: 'AED' },
-  { role: 'Software Engineer', location: 'Dubai', experienceLevel: 'Mid', minSalary: 90000, midSalary: 100000, maxSalary: 110000, currency: 'AED' },
-  { role: 'Software Engineer', location: 'Dubai', experienceLevel: 'Senior', minSalary: 130000, midSalary: 145000, maxSalary: 160000, currency: 'AED' },
-  { role: 'Software Engineer', location: 'Dubai', experienceLevel: 'Lead', minSalary: 150000, midSalary: 165000, maxSalary: 180000, currency: 'AED' },
+  // TAX
+  { role: 'Partner (5+ years) - Tax', location: 'UAE', category: 'Tax', minSalary: 85000, midSalary: 103500, maxSalary: 122000, currency: 'AED' },
+  { role: 'Partner (1-4 years) - Tax', location: 'UAE', category: 'Tax', minSalary: 57000, midSalary: 68000, maxSalary: 79000, currency: 'AED' },
+  { role: 'Director - Tax', location: 'UAE', category: 'Tax', minSalary: 48000, midSalary: 54500, maxSalary: 61000, currency: 'AED' },
+  { role: 'Senior Manager - Tax', location: 'UAE', category: 'Tax', minSalary: 31000, midSalary: 39000, maxSalary: 47000, currency: 'AED' },
+  { role: 'Manager - Tax', location: 'UAE', category: 'Tax', minSalary: 25000, midSalary: 32500, maxSalary: 40000, currency: 'AED' },
+  { role: 'Assistant Manager - Tax', location: 'UAE', category: 'Tax', minSalary: 16000, midSalary: 19500, maxSalary: 23000, currency: 'AED' },
+  { role: 'Head of Tax', location: 'UAE', category: 'Tax', minSalary: 71000, midSalary: 88000, maxSalary: 105000, currency: 'AED' },
 
-  // UAE - Product Manager (AED)
-  { role: 'Product Manager', location: 'UAE', experienceLevel: 'Entry', minSalary: 60000, midSalary: 65000, maxSalary: 70000, currency: 'AED' },
-  { role: 'Product Manager', location: 'UAE', experienceLevel: 'Mid', minSalary: 90000, midSalary: 100000, maxSalary: 110000, currency: 'AED' },
-  { role: 'Product Manager', location: 'UAE', experienceLevel: 'Senior', minSalary: 130000, midSalary: 145000, maxSalary: 160000, currency: 'AED' },
-  { role: 'Product Manager', location: 'UAE', experienceLevel: 'Lead', minSalary: 150000, midSalary: 170000, maxSalary: 180000, currency: 'AED' },
+  // LEGAL
+  { role: 'Partner 5+', location: 'UAE', category: 'Legal', minSalary: 110000, midSalary: 175500, maxSalary: 241000, currency: 'AED' },
+  { role: 'Partner 1-4', location: 'UAE', category: 'Legal', minSalary: 82000, midSalary: 96000, maxSalary: 110000, currency: 'AED' },
+  { role: 'Counsel', location: 'UAE', category: 'Legal', minSalary: 66000, midSalary: 80000, maxSalary: 94000, currency: 'AED' },
+  { role: 'Senior Associate', location: 'UAE', category: 'Legal', minSalary: 49000, midSalary: 62500, maxSalary: 76000, currency: 'AED' },
+  { role: 'Associate - Legal', location: 'UAE', category: 'Legal', minSalary: 33000, midSalary: 44000, maxSalary: 55000, currency: 'AED' },
+  { role: 'Newly Qualified', location: 'UAE', category: 'Legal', minSalary: 22000, midSalary: 30500, maxSalary: 39000, currency: 'AED' },
+  { role: 'Paralegal', location: 'UAE', category: 'Legal', minSalary: 16000, midSalary: 21500, maxSalary: 27000, currency: 'AED' },
+  { role: 'Legal Secretary', location: 'UAE', category: 'Legal', minSalary: 14000, midSalary: 18000, maxSalary: 22000, currency: 'AED' },
+  { role: 'Chief Legal Officer', location: 'UAE', category: 'Legal', minSalary: 92000, midSalary: 112000, maxSalary: 132000, currency: 'AED' },
+  { role: 'General Counsel/Head', location: 'UAE', category: 'Legal', minSalary: 75000, midSalary: 90000, maxSalary: 105000, currency: 'AED' },
+  { role: 'Director - Legal', location: 'UAE', category: 'Legal', minSalary: 65000, midSalary: 72500, maxSalary: 80000, currency: 'AED' },
+  { role: 'Senior Legal Counsel', location: 'UAE', category: 'Legal', minSalary: 51000, midSalary: 59000, maxSalary: 67000, currency: 'AED' },
+  { role: 'Legal Counsel', location: 'UAE', category: 'Legal', minSalary: 39000, midSalary: 44000, maxSalary: 49000, currency: 'AED' },
+  { role: 'Legal Specialist', location: 'UAE', category: 'Legal', minSalary: 25000, midSalary: 30000, maxSalary: 35000, currency: 'AED' },
 
-  { role: 'Product Manager', location: 'Abu Dhabi', experienceLevel: 'Entry', minSalary: 60000, midSalary: 68000, maxSalary: 70000, currency: 'AED' },
-  { role: 'Product Manager', location: 'Abu Dhabi', experienceLevel: 'Mid', minSalary: 90000, midSalary: 105000, maxSalary: 110000, currency: 'AED' },
-  { role: 'Product Manager', location: 'Abu Dhabi', experienceLevel: 'Senior', minSalary: 130000, midSalary: 150000, maxSalary: 160000, currency: 'AED' },
-  { role: 'Product Manager', location: 'Abu Dhabi', experienceLevel: 'Lead', minSalary: 150000, midSalary: 175000, maxSalary: 180000, currency: 'AED' },
-
-  { role: 'Product Manager', location: 'Dubai', experienceLevel: 'Entry', minSalary: 60000, midSalary: 65000, maxSalary: 70000, currency: 'AED' },
-  { role: 'Product Manager', location: 'Dubai', experienceLevel: 'Mid', minSalary: 90000, midSalary: 100000, maxSalary: 110000, currency: 'AED' },
-  { role: 'Product Manager', location: 'Dubai', experienceLevel: 'Senior', minSalary: 130000, midSalary: 145000, maxSalary: 160000, currency: 'AED' },
-  { role: 'Product Manager', location: 'Dubai', experienceLevel: 'Lead', minSalary: 150000, midSalary: 170000, maxSalary: 180000, currency: 'AED' },
-
-  // UAE - Data Analyst (AED)
-  { role: 'Data Analyst', location: 'UAE', experienceLevel: 'Entry', minSalary: 60000, midSalary: 65000, maxSalary: 70000, currency: 'AED' },
-  { role: 'Data Analyst', location: 'UAE', experienceLevel: 'Mid', minSalary: 90000, midSalary: 100000, maxSalary: 110000, currency: 'AED' },
-  { role: 'Data Analyst', location: 'UAE', experienceLevel: 'Senior', minSalary: 130000, midSalary: 140000, maxSalary: 160000, currency: 'AED' },
-  { role: 'Data Analyst', location: 'UAE', experienceLevel: 'Lead', minSalary: 150000, midSalary: 160000, maxSalary: 180000, currency: 'AED' },
-
-  { role: 'Data Analyst', location: 'Abu Dhabi', experienceLevel: 'Entry', minSalary: 60000, midSalary: 68000, maxSalary: 70000, currency: 'AED' },
-  { role: 'Data Analyst', location: 'Abu Dhabi', experienceLevel: 'Mid', minSalary: 90000, midSalary: 105000, maxSalary: 110000, currency: 'AED' },
-  { role: 'Data Analyst', location: 'Abu Dhabi', experienceLevel: 'Senior', minSalary: 130000, midSalary: 145000, maxSalary: 160000, currency: 'AED' },
-  { role: 'Data Analyst', location: 'Abu Dhabi', experienceLevel: 'Lead', minSalary: 150000, midSalary: 165000, maxSalary: 180000, currency: 'AED' },
-
-  { role: 'Data Analyst', location: 'Dubai', experienceLevel: 'Entry', minSalary: 60000, midSalary: 65000, maxSalary: 70000, currency: 'AED' },
-  { role: 'Data Analyst', location: 'Dubai', experienceLevel: 'Mid', minSalary: 90000, midSalary: 100000, maxSalary: 110000, currency: 'AED' },
-  { role: 'Data Analyst', location: 'Dubai', experienceLevel: 'Senior', minSalary: 130000, midSalary: 140000, maxSalary: 160000, currency: 'AED' },
-  { role: 'Data Analyst', location: 'Dubai', experienceLevel: 'Lead', minSalary: 150000, midSalary: 160000, maxSalary: 180000, currency: 'AED' },
+  // MANUFACTURING
+  { role: 'Managing Director', location: 'UAE', category: 'Manufacturing', minSalary: 103000, midSalary: 122500, maxSalary: 142000, currency: 'AED' },
+  { role: 'Operations Director', location: 'UAE', category: 'Manufacturing', minSalary: 84000, midSalary: 102000, maxSalary: 120000, currency: 'AED' },
+  { role: 'Chief Production Officer', location: 'UAE', category: 'Manufacturing', minSalary: 71000, midSalary: 79500, maxSalary: 88000, currency: 'AED' },
+  { role: 'General Manager', location: 'UAE', category: 'Manufacturing', minSalary: 59000, midSalary: 70500, maxSalary: 82000, currency: 'AED' },
+  { role: 'Operations Manager', location: 'UAE', category: 'Manufacturing', minSalary: 30000, midSalary: 38000, maxSalary: 46000, currency: 'AED' },
+  { role: 'Plant / Factory Manager', location: 'UAE', category: 'Manufacturing', minSalary: 30000, midSalary: 37000, maxSalary: 44000, currency: 'AED' },
+  { role: 'Production Manager', location: 'UAE', category: 'Manufacturing', minSalary: 30000, midSalary: 34500, maxSalary: 39000, currency: 'AED' },
+  { role: 'HSE Manager', location: 'UAE', category: 'Manufacturing', minSalary: 24000, midSalary: 30000, maxSalary: 36000, currency: 'AED' },
+  { role: 'Quality Manager', location: 'UAE', category: 'Manufacturing', minSalary: 26000, midSalary: 29500, maxSalary: 33000, currency: 'AED' },
+  { role: 'Maintenance Manager', location: 'UAE', category: 'Manufacturing', minSalary: 22000, midSalary: 27500, maxSalary: 33000, currency: 'AED' },
+  
+  // SUPPLY CHAIN
+  { role: 'General Manager - Supply Chain', location: 'UAE', category: 'Supply Chain', minSalary: 64000, midSalary: 81500, maxSalary: 99000, currency: 'AED' },
+  { role: 'Procurement Director', location: 'UAE', category: 'Supply Chain', minSalary: 51000, midSalary: 62500, maxSalary: 74000, currency: 'AED' },
+  { role: 'Supply Chain Director', location: 'UAE', category: 'Supply Chain', minSalary: 49000, midSalary: 60000, maxSalary: 71000, currency: 'AED' },
+  { role: 'Supply Chain Manager', location: 'UAE', category: 'Supply Chain', minSalary: 25000, midSalary: 33000, maxSalary: 41000, currency: 'AED' },
+  { role: 'Operations Manager - Supply Chain', location: 'UAE', category: 'Supply Chain', minSalary: 21000, midSalary: 30000, maxSalary: 39000, currency: 'AED' },
+  { role: 'Logistics Manager', location: 'UAE', category: 'Supply Chain', minSalary: 16000, midSalary: 21500, maxSalary: 27000, currency: 'AED' },
+  { role: 'Warehouse Manager', location: 'UAE', category: 'Supply Chain', minSalary: 15000, midSalary: 18000, maxSalary: 21000, currency: 'AED' },
+  
+  // SALES & MARKETING - B2C
+  { role: 'Chief Sales Officer', location: 'UAE', category: 'Sales B2C', minSalary: 78000, midSalary: 94000, maxSalary: 110000, currency: 'AED' },
+  { role: 'General Manager - Sales', location: 'UAE', category: 'Sales B2C', minSalary: 62000, midSalary: 70500, maxSalary: 79000, currency: 'AED' },
+  { role: 'Commercial Director', location: 'UAE', category: 'Sales B2C', minSalary: 59000, midSalary: 65500, maxSalary: 72000, currency: 'AED' },
+  { role: 'Sales Director', location: 'UAE', category: 'Sales B2C', minSalary: 47000, midSalary: 54500, maxSalary: 62000, currency: 'AED' },
+  { role: 'Country Sales Manager', location: 'UAE', category: 'Sales B2C', minSalary: 41000, midSalary: 46000, maxSalary: 51000, currency: 'AED' },
+  { role: 'Sales Manager', location: 'UAE', category: 'Sales B2C', minSalary: 23000, midSalary: 28500, maxSalary: 34000, currency: 'AED' },
+  { role: 'Key Account Manager', location: 'UAE', category: 'Sales B2C', minSalary: 17000, midSalary: 21000, maxSalary: 25000, currency: 'AED' },
+  
+  { role: 'Chief Marketing Officer (CMO)', location: 'UAE', category: 'Marketing B2C', minSalary: 85000, midSalary: 102500, maxSalary: 120000, currency: 'AED' },
+  { role: 'Marketing Director', location: 'UAE', category: 'Marketing B2C', minSalary: 59000, midSalary: 65500, maxSalary: 72000, currency: 'AED' },
+  { role: 'Communications Director', location: 'UAE', category: 'Marketing B2C', minSalary: 60000, midSalary: 67000, maxSalary: 74000, currency: 'AED' },
+  { role: 'Marketing Manager', location: 'UAE', category: 'Marketing B2C', minSalary: 38000, midSalary: 43000, maxSalary: 48000, currency: 'AED' },
+  { role: 'Digital Marketing Manager', location: 'UAE', category: 'Marketing B2C', minSalary: 30000, midSalary: 36500, maxSalary: 43000, currency: 'AED' },
+  { role: 'Brand Manager', location: 'UAE', category: 'Marketing B2C', minSalary: 19000, midSalary: 22500, maxSalary: 26000, currency: 'AED' },
+  
+  // CONSTRUCTION & PROJECT MANAGEMENT
+  { role: 'Chief Projects Officer', location: 'UAE', category: 'Construction', minSalary: 107000, midSalary: 165500, maxSalary: 224000, currency: 'AED' },
+  { role: 'Programme Director', location: 'UAE', category: 'Construction', minSalary: 78000, midSalary: 105500, maxSalary: 133000, currency: 'AED' },
+  { role: 'Project Director', location: 'UAE', category: 'Construction', minSalary: 55000, midSalary: 66500, maxSalary: 78000, currency: 'AED' },
+  { role: 'Commercial Director - Construction', location: 'UAE', category: 'Construction', minSalary: 64000, midSalary: 77500, maxSalary: 91000, currency: 'AED' },
+  { role: 'Senior Project Manager', location: 'UAE', category: 'Construction', minSalary: 39000, midSalary: 47000, maxSalary: 55000, currency: 'AED' },
+  { role: 'Project Manager', location: 'UAE', category: 'Construction', minSalary: 22000, midSalary: 30500, maxSalary: 39000, currency: 'AED' },
+  { role: 'Construction Manager', location: 'UAE', category: 'Construction', minSalary: 22000, midSalary: 30500, maxSalary: 39000, currency: 'AED' },
+  { role: 'Commercial Manager', location: 'UAE', category: 'Construction', minSalary: 21000, midSalary: 29500, maxSalary: 38000, currency: 'AED' },
 ];
-
-const SalaryAssessmentTool = () => {
-  const [selectedRole, setSelectedRole] = useState('');
-  const [selectedLocation, setSelectedLocation] = useState('');
-  const [selectedExperience, setSelectedExperience] = useState('');
-  const [results, setResults] = useState(null);
-
-  // Extract unique values for dropdowns
-  const roles = [...new Set(salaryData.map(item => item.role))];
-  const locations = [...new Set(salaryData.map(item => item.location))];
-  const experienceLevels = ['Entry', 'Mid', 'Senior', 'Lead'];
-
-  const handleAssessment = () => {
-    if (!selectedRole || !selectedLocation || !selectedExperience) {
-      alert('Please select all fields');
-      return;
-    }
-
-    const matchedData = salaryData.find(
-      item =>
-        item.role === selectedRole &&
-        item.location === selectedLocation &&
-        item.experienceLevel === selectedExperience
-    );
-
-    if (matchedData) {
-      setResults(matchedData);
-    } else {
-      setResults(null);
-      alert('No salary data found for this combination');
-    }
-  };
-
-  const formatSalary = (amount, currency) => {
-    return `${currency} ${amount.toLocaleString()}`;
-  };
-
-  return (
-    <div className="salary-tool-container">
-      <h1>Salary Assessment Tool</h1>
-      <p className="subtitle">Min-Mid-Max Salary Range Format</p>
-
-      <div className="form-container">
-        <div className="form-group">
-          <label>Role</label>
-          <select value={selectedRole} onChange={(e) => setSelectedRole(e.target.value)}>
-            <option value="">Select Role</option>
-            {roles.map(role => (
-              <option key={role} value={role}>{role}</option>
-            ))}
-          </select>
-        </div>
-
-        <div className="form-group">
-          <label>Location</label>
-          <select value={selectedLocation} onChange={(e) => setSelectedLocation(e.target.value)}>
-            <option value="">Select Location</option>
-            {locations.map(location => (
-              <option key={location} value={location}>{location}</option>
-            ))}
-          </select>
-        </div>
-
-        <div className="form-group">
-          <label>Experience Level</label>
-          <select value={selectedExperience} onChange={(e) => setSelectedExperience(e.target.value)}>
-            <option value="">Select Experience</option>
-            {experienceLevels.map(level => (
-              <option key={level} value={level}>{level}</option>
-            ))}
-          </select>
-        </div>
-
-        <button onClick={handleAssessment} className="assess-button">
-          Get Salary Range
-        </button>
-      </div>
-
-      {results && (
-        <div className="results-container">
-          <h2>Salary Range Results</h2>
-          <div className="salary-ranges">
-            <div className="salary-card min">
-              <h3>Minimum</h3>
-              <p className="amount">{formatSalary(results.minSalary, results.currency)}</p>
-              <span className="label">Entry level for this role</span>
-            </div>
-            <div className="salary-card mid">
-              <h3>Mid-Point</h3>
-              <p className="amount">{formatSalary(results.midSalary, results.currency)}</p>
-              <span className="label">Market average</span>
-            </div>
-            <div className="salary-card max">
-              <h3>Maximum</h3>
-              <p className="amount">{formatSalary(results.maxSalary, results.currency)}</p>
-              <span className="label">Top performer range</span>
-            </div>
-          </div>
-          <div className="results-info">
-            <p><strong>Role:</strong> {results.role}</p>
-            <p><strong>Location:</strong> {results.location}</p>
-            <p><strong>Experience:</strong> {results.experienceLevel}</p>
-            <p><strong>Currency:</strong> {results.currency}</p>
-          </div>
-        </div>
-      )}
-    </div>
-  );
-};
-
-export default SalaryAssessmentTool;
